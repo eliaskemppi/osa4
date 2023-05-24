@@ -38,7 +38,7 @@ blogsRouter.post('/', async (request, response) => {
     if (!decodedToken.id) {
       return res.status(401).json({ error: 'token invalid' })
     }
-    const user = await User.findById(decodedToken.id)
+    //const user = await User.findById(decodedToken.id)
     const blog = await Blog.findById(req.params.id)
 
     console.log(decodedToken.id.toString())
@@ -53,7 +53,7 @@ blogsRouter.post('/', async (request, response) => {
   })
         
 
-  /*blogsRouter.put('/api/blogs/:id', async (request, response, next) => {
+  blogsRouter.put('/:id', async (request, response) => {
     const body = request.body
   
     const blog = {
@@ -62,14 +62,8 @@ blogsRouter.post('/', async (request, response) => {
       url: body.url,
       likes: body.likes
     }
-    await console.log(blog)
-    try {
-      const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-      console.log(updatedBlog)
-      response.json(updatedBlog)
-    } catch(exeption) {
-      next(exeption)
-    } 
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.json(updatedBlog)
   })
-*/
+
   module.exports = blogsRouter

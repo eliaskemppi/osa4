@@ -127,6 +127,31 @@ describe('deleting a blog', () => {
   })
 })
 
+describe('editing a blog', () => {
+  test('a blog can be liked', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToEdit = blogsAtStart[0]
+    const editedBlog = {
+      title: blogToEdit.title,
+      author: blogToEdit.author,
+      url: blogToEdit.url,
+      likes: blogToEdit.likes + 1
+    }
+    
+    await api
+      .put(`/api/blogs/${blogToEdit.id}`)
+      .send(editedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const finalBlogs = await helper.blogsInDb()
+    const finalBlog = finalBlogs[0]
+    expect(finalBlog.likes).toBe(1)
+    })
+       
+})
+
+
   afterAll(async () => {
     await mongoose.connection.close()
   })
